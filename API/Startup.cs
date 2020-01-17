@@ -21,7 +21,7 @@ namespace API
         {
             Configuration = configuration;
         }
-
+        //readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -31,6 +31,15 @@ namespace API
             {
                 opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
             });
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy("CorsPolicy", policy =>
+                {
+                    policy.AllowAnyHeader().AllowCredentials()
+                    .AllowAnyMethod().WithOrigins("http://localhost:3000/");
+                });
+            });
+          
             services.AddControllers();
             
         }
@@ -42,13 +51,14 @@ namespace API
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            
             //app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            
+            
             app.UseAuthorization();
-
+            app.UseCors("CorsPolicy");
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
