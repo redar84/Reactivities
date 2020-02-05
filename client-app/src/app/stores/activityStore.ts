@@ -27,14 +27,15 @@ class ActivityStore {
       this.loadingInitail = false;
     }
   }
-  @action cancelEditMode = () => {
+  @action cancelSelectedActivity = () => {
     this.selectedActivity = undefined;
     this.editMode = false;
   }
-  @action cancelCreate = () => {
+  @action cancelFormCreate = () => {
     this.editMode = false
   }
-  @action OpenEditForm= () =>{
+  @action OpenEditForm= (id:string) =>{
+    this.selectedActivity = this.activityRegistry.get(id) 
     this.editMode = true;
   }
   @action openCreateForm = () => {

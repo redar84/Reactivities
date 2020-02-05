@@ -7,7 +7,7 @@ const ActivityDetails: React.FC = () => {
 
     const acivityStore = useContext(ActivityStore);
     const {selectedActivity:activity,
-          cancelEditMode, OpenEditForm} = acivityStore;
+        cancelSelectedActivity, OpenEditForm} = acivityStore;
   return (
     <Card fluid>
       <Image src={`/assets/categoryImages/${activity!.category}.jpg`} wrapped ui={false} />
@@ -24,8 +24,9 @@ const ActivityDetails: React.FC = () => {
         <Button.Group widths={2}>
           <Button basic color="blue" 
           content="Edit" 
-          onClick={()=>OpenEditForm()}/>
-          <Button basic color="grey" content="Cancel" onClick={()=>cancelEditMode()}/>
+          onClick={()=>OpenEditForm(activity!.id)}/>
+          <Button basic color="grey" content="Cancel"
+           onClick={cancelSelectedActivity}/>
         </Button.Group>
       </Card.Content>
     </Card>

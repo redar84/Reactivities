@@ -6,7 +6,7 @@ import ActivityStore from '../../../../../app/stores/activityStore'
 const ActivityForm: React.FC = () => {
     const activityStore = useContext(ActivityStore);
     const{selectedActivity:intializeFormState, editActivity, createActivity, 
-          cancelEditMode, submitting} = activityStore
+        cancelFormCreate, submitting} = activityStore
     const intializeForm = () => {
         if (intializeFormState) { 
             return intializeFormState
@@ -69,7 +69,7 @@ const ActivityForm: React.FC = () => {
                 loading={submitting}
                  />
                 <Button content="Cancel" 
-                onClick={() => cancelEditMode()} 
+                onClick={cancelFormCreate} 
                 floated="right" type="submit" />
             </Form>
         </Segment>
