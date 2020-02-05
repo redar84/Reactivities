@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment, SyntheticEvent } from "react";
+import React, { useState, useEffect, Fragment, SyntheticEvent, useContext } from "react";
 import { Container } from "semantic-ui-react";
 import "./styles.css";
 import { IActivity } from "../models/activity";
@@ -6,38 +6,29 @@ import NavBar from "../../features/nav/NavBar";
 import ActivityDashboard from "../../features/activities/dashboard/ActivityDashboard";
 import agent from "../api/agent";
 import LoadingComponent from "./LoadingComponent";
-
+import ActivityStore from '../stores/activityStore';
+import {observer} from 'mobx-react-lite';
 const App = () => {
+  const activityStore = useContext(ActivityStore);
   const [activities, setActivity] = useState<IActivity[]>([])
   const [selectedActivity, setSelectedActivity] = useState<IActivity | null>(null)
   const [editMode, setEditMode] = useState(false)
-  const[loading, setLoading] = useState(true)
   const[submitting, setSubmitting] =  useState(false);
   const[target,setTarget] = useState('')
   useEffect(() => {
-    agent.Activities.list()
-      .then(response => {
-        let activities:IActivity[] = []
-        response.forEach( activity =>{
-          activity.date = activity.date.split('.')[0];
-          activities.push(activity);
-        })
-        setActivity(activities);
-      })
-      .catch(error => {
-        console.log(error.response);
-      }).then(()=> setLoading(false));
-
-  }, [])
+    activityStore.loadActivities();
+  }, [activityStore])
+  /*
   const handleSelectActivity = (id: string) => {
     setSelectedActivity(activities.filter(a => a.id === id)[0])
     setEditMode(false)
   }
-  const handleOpenCreateForm = ()=>{
+  */
+  /* const handleOpenCreateForm = ()=>{
     setSelectedActivity(null);
     setEditMode(true)
-  }
-  const handleCreatActivity = (activity:IActivity) =>{
+  } */
+ /*  const handleCreatActivity = (activity:IActivity) =>{
 
     setSubmitting(true);
     agent.Activities.create(activity).then(()=>{
@@ -46,7 +37,7 @@ const App = () => {
       setEditMode(false);
      
     }).then(()=>  setSubmitting(false))
-  }
+  } */
   const handleEditActivity = (activity:IActivity) =>{
     setSubmitting(true);
     agent.Activities.update(activity).then(()=>{
@@ -63,21 +54,16 @@ const App = () => {
     }).then(()=> setSubmitting(false))
    
   }
-  if(loading) return <LoadingComponent content="Loading....."/>
+  if(activityStore.loadingInitail) return <LoadingComponent content="Loading....."/>
   return (
     <Fragment>
-      <NavBar openCreateForm={handleOpenCreateForm}/>
+      <NavBar/>
       <Container style={{ marginTop: '7em' }}>
         <ActivityDashboard
-          submitting ={submitting}
-          selectActivity={handleSelectActivity}
-          activities={activities}
-          selectedActivity={selectedActivity} 
-          editMode={editMode}
+          submitting ={submitting} 
+          activities={activityStore.activities}
           setEditMode={setEditMode}
           setSelectedActivity={setSelectedActivity}
-          createActivity={handleCreatActivity}
-          editActivity={handleEditActivity}
           deleteActivity={handelDeleteActivity}
           target={target}/>
       </Container>
@@ -86,4 +72,4 @@ const App = () => {
 }
 
 
-export default App;
+export default observer(App);
