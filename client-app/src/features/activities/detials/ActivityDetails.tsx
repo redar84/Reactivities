@@ -2,7 +2,6 @@ import React, { useContext, useEffect } from 'react';
 import { Card, Image, Button } from 'semantic-ui-react';
 import { observer } from 'mobx-react-lite';
 import ActivityStore from '../../../app/stores/activityStore'
-import activityStore from '../../../app/stores/activityStore';
 import { RouteComponentProps, Link } from 'react-router-dom';
 import LoadingComponent from '../../../app/layout/LoadingComponent';
 interface DetialsParams{
@@ -13,11 +12,10 @@ const ActivityDetails: React.FC<RouteComponentProps<DetialsParams>> = ({
   history}) => {
 
     const activityStore = useContext(ActivityStore);
-    const {activity,
-        cancelSelectedActivity, OpenEditForm, loadActivity, loadingInitail} = activityStore;
+    const {activity, loadActivity, loadingInitail} = activityStore;
      useEffect(()=>{
        loadActivity(match.params.id)
-    },[loadActivity]);
+    },[loadActivity, match.params.id]);
     if(loadingInitail || !activity) return <LoadingComponent content='Loading Activity....' />
   return (
     <Card fluid>

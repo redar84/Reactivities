@@ -6,7 +6,7 @@ configure({enforceActions: 'always'})
 class ActivityStore {
   @observable activityRegistry = new Map();
   @observable activities: IActivity[] = [];
-  @observable activity: IActivity | undefined;
+  @observable activity: IActivity | undefined |null;
   @observable loadingInitail = false;
   @observable editMode = false;
   @observable submitting = false;
@@ -53,6 +53,9 @@ class ActivityStore {
       }
     }
     
+  }
+  @action clearActivity = ()=>{
+    this.activity = null
   }
   getActivity = (id:string) =>{
         return this.activityRegistry.get(id);

@@ -9,11 +9,11 @@ import { RouteComponentProps } from 'react-router-dom';
 interface DetailsParams {
     id: string
 }
-const ActivityForm: React.FC<RouteComponentProps<DetailsParams>> = ({ match }) => {
+const ActivityForm: React.FC<RouteComponentProps<DetailsParams>> = ({ match, history }) => {
     const activityStore = useContext(ActivityStore);
     const { activity: intializeFormState, editActivity, createActivity,
         cancelFormCreate, submitting,
-        loadActivity } = activityStore
+        loadActivity, clearActivity } = activityStore
  /*    const intializeForm = () => {
         if (intializeFormState) {
             return intializeFormState
@@ -30,13 +30,6 @@ const ActivityForm: React.FC<RouteComponentProps<DetailsParams>> = ({ match }) =
         };
 
     } */
-    useEffect(() => {
-        if (match.params.id) {
-            loadActivity(match.params.id)
-            .then(()=> intializeFormState && setActivity(intializeFormState));
-        }
-
-    }, [loadActivity])
     const [activity, setActivity] = useState<IActivity>(
         {
             id: '',
@@ -47,6 +40,17 @@ const ActivityForm: React.FC<RouteComponentProps<DetailsParams>> = ({ match }) =
             city: '',
             venue: ''
         });
+    useEffect(() => {
+        if (match.params.id && activity.id.length === 0) {
+            loadActivity(match.params.id)
+            .then(()=> intializeFormState && setActivity(intializeFormState));
+        }
+        return () =>{
+            clearActivity();
+        }
+
+    }, [loadActivity,clearActivity,match.params.id,activity.id.length, intializeFormState ])
+  
     const handelSubmit = () => {
         if (activity.id.length === 0) {
             let newActivity = {
@@ -55,9 +59,11 @@ const ActivityForm: React.FC<RouteComponentProps<DetailsParams>> = ({ match }) =
             }
 
             createActivity(newActivity)
+            .then(()=> history.push(`/activities/${newActivity.id}`));
+            
 
         } else {
-            editActivity(activity)
+            editActivity(activity).then(()=> history.push(`/activities/${activity.id}`))
 
         }
     }
