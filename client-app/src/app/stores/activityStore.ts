@@ -5,10 +5,8 @@ import agent from '../api/agent';
 configure({enforceActions: 'always'})
 class ActivityStore {
   @observable activityRegistry = new Map();
-  @observable activities: IActivity[] = [];
   @observable activity: IActivity | undefined |null;
   @observable loadingInitail = false;
-  @observable editMode = false;
   @observable submitting = false;
   @observable target = '';
   @computed get activitiesByDate() {
@@ -60,24 +58,10 @@ class ActivityStore {
   getActivity = (id:string) =>{
         return this.activityRegistry.get(id);
   }
-  @action cancelSelectedActivity = () => {
-    this.activity = undefined;
-    this.editMode = false;
-  }
-  @action cancelFormCreate = () => {
-    this.editMode = false
-  }
-  @action OpenEditForm= (id:string) =>{
-    this.activity = this.activityRegistry.get(id) 
-    this.editMode = true;
-  }
-  @action openCreateForm = () => {
-    this.activity = undefined;
-    this.editMode = true
-  }
+  
   @action selectActivity = (id: string) => {
     this.activity = this.activityRegistry.get(id);
-    this.editMode = false
+
   }
 
   @action createActivity = async (activity: IActivity) => {
@@ -87,7 +71,7 @@ class ActivityStore {
       runInAction('Creating Activity',()=>{
         this.activityRegistry.set(activity.id, activity)
         this.activity = activity
-        this.editMode = false;
+
         this.submitting = false
       }) 
     } catch (error) {
@@ -107,7 +91,7 @@ class ActivityStore {
         this.activityRegistry.set(activity.id, activity);
         this.activity = activity;
         this.submitting = false
-        this.editMode = false;
+
       })
     
       

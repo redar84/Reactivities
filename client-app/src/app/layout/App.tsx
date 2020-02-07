@@ -1,25 +1,20 @@
-import React, { useEffect, Fragment, useContext } from "react";
+import React, { Fragment } from "react";
 import { Container } from "semantic-ui-react";
 import "./styles.css";
 import NavBar from "../../features/nav/NavBar";
-import ActivityDashboard from "../../features/activities/dashboard/ActivityDashboard";
-import LoadingComponent from "./LoadingComponent";
-import ActivityStore from "../stores/activityStore";
 import { Route, withRouter, RouteComponentProps } from "react-router-dom";
 import ActivityForm from "../../features/activities/dashboard/form/form/ActivityForm";
 import { observer } from "mobx-react-lite";
 import HomePage from "../../features/home/HomePage";
 import ActivityDetails from "../../features/activities/detials/ActivityDetails";
+import ActivityDashboard from "../../features/activities/dashboard/ActivityDashboard";
 const App: React.FC<RouteComponentProps> = ({ location }) => {
-  const activityStore = useContext(ActivityStore);
   /* const [activities, setActivity] = useState<IActivity[]>([])
   const [selectedActivity, setSelectedActivity] = useState<IActivity | null>(null)
   const [editMode, setEditMode] = useState(false)
   const[submitting, setSubmitting] =  useState(false);
   const[target,setTarget] = useState('') */
-  useEffect(() => {
-    activityStore.loadActivities();
-  }, [activityStore]);
+
   /*
   const handleSelectActivity = (id: string) => {
     setSelectedActivity(activities.filter(a => a.id === id)[0])
@@ -56,8 +51,7 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
     }).then(()=> setSubmitting(false))
    
   } */
-  if (activityStore.loadingInitail)
-    return <LoadingComponent content="Loading....." />;
+
   return (
     <Fragment>
       <Route exact path="/" component={HomePage} />

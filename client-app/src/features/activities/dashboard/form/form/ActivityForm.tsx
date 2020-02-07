@@ -4,7 +4,7 @@ import { IActivity } from '../../../../../app/models/activity';
 import { v4 as uuid } from 'uuid';
 import ActivityStore from '../../../../../app/stores/activityStore'
 import { observer } from 'mobx-react-lite';
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, Link } from 'react-router-dom';
 
 interface DetailsParams {
     id: string
@@ -12,7 +12,7 @@ interface DetailsParams {
 const ActivityForm: React.FC<RouteComponentProps<DetailsParams>> = ({ match, history }) => {
     const activityStore = useContext(ActivityStore);
     const { activity: intializeFormState, editActivity, createActivity,
-        cancelFormCreate, submitting,
+        submitting,
         loadActivity, clearActivity } = activityStore
  /*    const intializeForm = () => {
         if (intializeFormState) {
@@ -99,7 +99,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailsParams>> = ({ match, his
                     loading={submitting}
                 />
                 <Button content="Cancel"
-                    onClick={cancelFormCreate}
+                    as={Link} to={'/activities'}
                     floated="right" type="submit" />
             </Form>
         </Segment>
