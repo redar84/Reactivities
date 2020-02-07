@@ -9,14 +9,14 @@ const ActivityListItem: React.FC<IProps> = ({ activity }) => {
   return (
     <Segment.Group>
       <Segment>
-          <Item.Group>
-        <Item>
-          <Item.Image size="tiny" circular src="assets/user.png" />
-          <Item.Content>
-            <Item.Header as="a">{activity.title}</Item.Header>
-            <Item.Description>Hostd By</Item.Description>
-          </Item.Content>
-        </Item>
+        <Item.Group>
+          <Item>
+            <Item.Image size="tiny" circular src="assets/user.png" />
+            <Item.Content>
+              <Item.Header as="a">{activity.title}</Item.Header>
+              <Item.Description>Hostd By</Item.Description>
+            </Item.Content>
+          </Item>
         </Item.Group>
       </Segment>
       <Segment>
