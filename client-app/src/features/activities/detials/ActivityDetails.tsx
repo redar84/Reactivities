@@ -12,7 +12,7 @@ interface DetialsParams {
   id: string
 }
 const ActivityDetails: React.FC<RouteComponentProps<DetialsParams>> = ({
-  match,
+  match, history
   }) => {
 
   const activityStore = useContext(ActivityStore);
@@ -20,7 +20,9 @@ const ActivityDetails: React.FC<RouteComponentProps<DetialsParams>> = ({
   useEffect(() => {
     loadActivity(match.params.id)
   }, [loadActivity, match.params.id]);
-  if (loadingInitail || !activity) return <LoadingComponent content='Loading Activity....' />
+  if (loadingInitail)
+   return <LoadingComponent content='Loading Activity....' />
+   if(!activity) return <h2>Activity Not Found</h2>
   return (
     <Grid>
       <Grid.Column width={10}>

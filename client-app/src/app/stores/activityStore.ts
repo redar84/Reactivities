@@ -39,10 +39,9 @@ class ActivityStore {
      console.log(this.groupActivitiesByDate(activities));
     } catch (error) {
       runInAction('loading error',()=>{
-        
         this.loadingInitail = false;
       })
-      console.log(error.response);
+      console.log(error);
     }
   }
   @action loadActivity = async (id:string) =>{
@@ -58,8 +57,12 @@ class ActivityStore {
           this.loadingInitail = false;
         })
       } catch (error) {
-        this.loadingInitail = false;
-        console.log(error)
+       
+        runInAction('loading error',()=>{
+          this.loadingInitail = false;
+        })
+        console.log(error);
+     
       }
     }
     
