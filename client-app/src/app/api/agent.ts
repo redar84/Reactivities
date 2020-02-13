@@ -19,7 +19,7 @@ axios.interceptors.response.use(undefined, error => {
         
         toast.error('Server Error -- Check The Terminal For more infor !')
     }
-    
+    throw error;
 });
 const responseBody = (response:AxiosResponse) => response.data
 
@@ -34,7 +34,7 @@ const requests = {
 
 const Activities = {
     list: () :Promise<IActivity[]> => requests.get('/activities'),
-    detials: (id:string) => requests.get(`/activities/${id}`),
+    details: (id:string) => requests.get(`/activities/${id}`),
     create: (activity: IActivity) => requests.post('/activities', activity),
     update: (activity:IActivity) =>requests.put(`/activities/${activity.id}`, activity),
     delete:(id:string)=> requests.delete(`/activities/${id}`)

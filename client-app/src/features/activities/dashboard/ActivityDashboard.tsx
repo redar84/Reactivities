@@ -9,7 +9,7 @@ const ActivityDashboard: React.FC = () => {
   useEffect(() => {
     activityStore.loadActivities();
   }, [activityStore]);
-  if (activityStore.loadingInitail)
+  if (activityStore.loadingInitial)
     return <LoadingComponent content="Loading....." />;
   return (
     <Grid>
