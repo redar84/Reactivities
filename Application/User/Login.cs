@@ -1,4 +1,5 @@
 ﻿using Application.Errors;
+using Application.Interfaces;
 using Domain;
 using FluentValidation;
 using MediatR;
@@ -15,7 +16,7 @@ namespace Application.User
 {
     public class Login
     {
-        public class Query : IRequest<AppUser>
+        public class Query : IRequest<User>
         {
             public string Email { get; set; }
             public string Password { get; set; }
@@ -30,17 +31,19 @@ namespace Application.User
             }
         }
 
-        public class Handler : IRequestHandler<Query, AppUser>
+        public class Handler : IRequestHandler<Query, User>
         {
             private readonly UserManager<AppUser> _userManger;
             private readonly SignInManager<AppUser> _signInManger;
-            public Handler(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+            private readonly IJwtGenerator _jwtGenerator;
+            public Handler(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IJwtGenerator jwtGenerator)
             {
                 _userManger = userManager;
                 _signInManger = signInManager;
+                _jwtGenerator = jwtGenerator;
             }
 
-            public async Task<AppUser> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<User> Handle(Query request, CancellationToken cancellationToken)
             {
                 var user = await _userManger.FindByEmailAsync(request.Email);
                 if (user == null)
@@ -49,10 +52,21 @@ namespace Application.User
                 }
                 var result = await _signInManger.CheckPasswordSignInAsync(user, request.Password, false);
 
-                if (result)
+                if (result.Succeeded)
                 {
+                    // Todo: Genrate Token
 
+                    return new User
+                    {
+                        DisplayName = user.DisplayName,
+                        Token = _jwtGenerator.CreateToken(user),
+                        Username = user.UserName,
+                        Image = null
+
+                    };
                 }
+
+                throw new RestException(HttpStatusCode.Unauthorized);
             }
         }
     }
