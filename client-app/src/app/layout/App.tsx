@@ -10,6 +10,7 @@ import ActivityDetails from "../../features/activities/detials/ActivityDetails";
 import ActivityDashboard from "../../features/activities/dashboard/ActivityDashboard";
 import NotFound from "./NotFound";
 import {ToastContainer} from 'react-toastify'
+import LoginForm from "../../features/user/LoginForm";
 const App: React.FC<RouteComponentProps> = ({ location }) => {
   /* const [activities, setActivity] = useState<IActivity[]>([])
   const [selectedActivity, setSelectedActivity] = useState<IActivity | null>(null)
@@ -72,6 +73,7 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
                 path={["/createActivity", "/manage/:id"]}
                 component={ActivityForm}
               />
+              <Route  path='/login' component={LoginForm} />
               <Route  component={NotFound} />
               </Switch>
              
