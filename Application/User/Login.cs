@@ -36,7 +36,8 @@ namespace Application.User
             private readonly UserManager<AppUser> _userManger;
             private readonly SignInManager<AppUser> _signInManger;
             private readonly IJwtGenerator _jwtGenerator;
-            public Handler(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IJwtGenerator jwtGenerator)
+            public Handler(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, 
+                IJwtGenerator jwtGenerator)
             {
                 _userManger = userManager;
                 _signInManger = signInManager;

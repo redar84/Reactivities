@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useContext, useEffect } from "react";
 import { Container } from "semantic-ui-react";
 import "./styles.css";
 import NavBar from "../../features/nav/NavBar";
@@ -11,58 +11,33 @@ import ActivityDashboard from "../../features/activities/dashboard/ActivityDashb
 import NotFound from "./NotFound";
 import {ToastContainer} from 'react-toastify'
 import LoginForm from "../../features/user/LoginForm";
+import {RootStoreContext } from "../stores/rootStore";
+import LoadingComponent from "./LoadingComponent";
+import ModalContainer from "../common/modals/ModalContainer";
 const App: React.FC<RouteComponentProps> = ({ location }) => {
-  /* const [activities, setActivity] = useState<IActivity[]>([])
-  const [selectedActivity, setSelectedActivity] = useState<IActivity | null>(null)
-  const [editMode, setEditMode] = useState(false)
-  const[submitting, setSubmitting] =  useState(false);
-  const[target,setTarget] = useState('') */
-
-  /*
-  const handleSelectActivity = (id: string) => {
-    setSelectedActivity(activities.filter(a => a.id === id)[0])
-    setEditMode(false)
-  }
-  */
-  /* const handleOpenCreateForm = ()=>{
-    setSelectedActivity(null);
-    setEditMode(true)
-  } */
-  /*  const handleCreatActivity = (activity:IActivity) =>{
-
-    setSubmitting(true);
-    agent.Activities.create(activity).then(()=>{
-      setActivity([...activities, activity])
-      setSelectedActivity(activity)
-      setEditMode(false);
-     
-    }).then(()=>  setSubmitting(false))
-  } */
-  /*   const handleEditActivity = (activity:IActivity) =>{
-    setSubmitting(true);
-    agent.Activities.update(activity).then(()=>{
-      setActivity([...activities.filter(a=>a.id !== activity.id), activity])
-      setSelectedActivity(activity)
-      setEditMode(false);
-    }).then(()=> setSubmitting(false))
-  } */
-  /* const handelDeleteActivity =(event:SyntheticEvent<HTMLButtonElement>, id:string)=>{
-    setSubmitting(true);
-    setTarget(event.currentTarget.name)
-    agent.Activities.delete(id).then(()=>{
-      setActivity([...activities.filter(a=>a.id !== id)])
-    }).then(()=> setSubmitting(false))
-   
-  } */
-
+  
+  const rootStore = useContext(RootStoreContext);
+  const{setAppLoaded, token, appLoaded} = rootStore.commonStore;
+  const{getUser} = rootStore.userStore;
+  
+  useEffect(() => {
+    if(token) {
+        getUser().finally(()=>setAppLoaded())
+    }else{
+      setAppLoaded()
+    }
+  }, [getUser,setAppLoaded,token])
+  if(!appLoaded) return <LoadingComponent content='loading app...'/>
   return (
     <Fragment>
+    <ModalContainer/>
     <ToastContainer position="bottom-right"/>
       <Route exact path="/" component={HomePage} />
       <Route
         path={"/(.+)"}
         render={() => (
           <Fragment>
+
             <NavBar />
             <Container style={{ marginTop: "7em" }}>
               <Switch>
