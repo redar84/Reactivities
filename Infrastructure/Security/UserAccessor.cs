@@ -15,6 +15,9 @@ namespace Infrastructure.Security
         {
             _httpContextAccessor = httpContextAccessor;
         }
+
+        
+
         public string GetCurrentUsername()
         {
             var user = _httpContextAccessor.HttpContext.User?.Claims
