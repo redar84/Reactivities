@@ -23,4 +23,3 @@ const TextAreaInput: React.FC<IProps> = ({
   };
   
   export default TextAreaInput;
-  
