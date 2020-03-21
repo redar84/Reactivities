@@ -3,6 +3,11 @@ export interface IUser {
     displayName: string;
     token: string;
     image?: string;
+
+    // DisplayName:string;
+    // Username:string;
+    // Token:string;
+    // Image?:string;
 }
 
 export interface IUserFormValues {

@@ -64,12 +64,12 @@ namespace API
                 .AddFluentValidation(cfg =>
                 {
                     cfg.RegisterValidatorsFromAssemblyContaining<Create>();
-                })
-                .AddJsonOptions(opt =>
-                 {
-                     opt.JsonSerializerOptions.PropertyNamingPolicy = null;
-                     opt.JsonSerializerOptions.MaxDepth = 1024;
-                 });
+                });
+                //.AddJsonOptions(opt =>
+                // {
+                //     //opt.JsonSerializerOptions.PropertyNamingPolicy = null;
+                //     //opt.JsonSerializerOptions.MaxDepth = 1024;
+                // });
             var builder = services.AddIdentityCore<AppUser>();
             var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
             identityBuilder.AddEntityFrameworkStores<DataContext>();

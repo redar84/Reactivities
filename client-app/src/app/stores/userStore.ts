@@ -21,13 +21,11 @@ export default class UserStore {
 
     try {
       const user = await agent.User.login(values);
-      
       runInAction(() => {
         console.log(user);
         this.user = user;
-        console.log(this.user)
       });
-      console.log(user.token)
+      console.log(user.displayName);
       this.rootStore.commonStore.setToken(user.token);
       this.rootStore.modalStore.closeModal();
       history.push('/activities');

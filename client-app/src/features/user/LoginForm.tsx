@@ -18,7 +18,7 @@ const LoginForm = () => {
   const { login } = rootStore.userStore;
   return (
     <FinalForm
-      onSubmit={(values: IUserFormValues) =>
+      onSubmit={(values: IUserFormValues) =>  
         login(values).catch(error => ({
           [FORM_ERROR]: error
         }))

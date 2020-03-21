@@ -1,18 +1,23 @@
 import React from 'react';
-import { List, Image } from 'semantic-ui-react';
-
-const ActivityListItemAttendees = () => {
+import { List, Image, Popup} from 'semantic-ui-react';
+import { IAttendee } from '../../../app/models/activity';
+interface IProps {
+    attendees: IAttendee[]
+}
+const ActivityListItemAttendees: React.FC<IProps> = ({ attendees }) => {
     return (
         <List horizontal>
-            <List.Item>
-                <Image size='mini' circular src={'/assets/user.png'} />
-            </List.Item>
-            <List.Item>
-                <Image size='mini' circular src={'/assets/user.png'} />
-            </List.Item>
-            <List.Item>
-                <Image size='mini' circular src={'/assets/user.png'} />
-            </List.Item>
+            {attendees.map((attendee) => (
+                <List.Item key={attendee.username}>
+                 <Popup
+                 header={attendee.displayName}
+                 trigger={<Image size='mini' circular src={'/assets/user.png'} />}
+                 />
+                    
+                </List.Item>
+            ))}
+
+
         </List>
     );
 };
